@@ -1,0 +1,144 @@
+.arm-player,
+.arm-player *
+    padding: 0
+    margin: 0
+    box-sizing: border-box
+
+.arm-player
+    padding: 20px
+    border-radius: 15px
+    background-color: #282A3B
+    display: flex
+    align-items: center
+    flex-wrap: nowrap
+    flex-direction: row
+    .max-content-width
+        flex: 1 1 0%
+    .btn-circle-hover-gradient
+        width: 24px
+        height: 24px
+        min-width: 24px
+        background-color: #393B4B
+        cursor: pointer
+        box-shadow: none
+        border-radius: 50%
+        border: none
+        outline: none
+        display: flex
+        justify-content: center
+        align-items: center
+        flex-wrap: nowrap
+        flex-direction: row
+        &:hover
+            background: linear-gradient(104.3deg, #EB951B 0%, #D97A0C 100%)
+            color: #FFFFFF
+            border: none
+            outline: none
+            box-shadow: none
+        &.play:before,
+        &.play::before
+            content: url('data:image/svg+xml, <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 0L9.33333 6L0 12V0Z" fill="rgb(255 255 255)"/></svg>')
+            height: 10px
+        &.play:hover:before,
+        &.play:active:before,
+        &.play:focus:before,
+        &.play:hover::before,
+        &.play:active::before,
+        &.play:focus::before
+            content: url('data:image/svg+xml, <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 0L9.33333 6L0 12V0Z" fill="rgb(255 255 255)"/></svg>')
+        &.pause:before,
+        &.pause::before
+            content: url('data:image/svg+xml, <svg width="10" height="9" viewBox="0 0 10 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.90918 0V9H3.36372L3.36373 0H0.90918ZM6.63645 0L6.63645 9H9.091V0H6.63645Z" fill="rgb(255 255 255)"/></svg>')
+        &[disabled="disabled"],
+        &[disabled="true"],
+        &[disabled],
+        &.disabled
+            user-select: none
+            pointer-events: none
+            opacity: .8
+            cursor: default
+    .tooltip-custom-parent
+        position: relative
+        .tooltip-custom
+            position: absolute
+            padding: 6px 10px
+            font-family: Poppins
+            font-style: normal
+            font-weight: 500
+            font-size: 12px
+            line-height: 18px
+            text-align: center
+            color: #FFFFFF
+            background-color: #171722
+            border-radius: 5px
+            bottom: -34px
+            left: 50%
+            transform: translateX(-50%)
+            display: none
+            white-space: nowrap
+        &:hover .tooltip-custom
+            display: block
+    .text-duration-audio
+        padding-left: 16px
+        padding-right: 16px
+        color: #FFFFFF
+        text-align: center
+        min-width: 120px
+    .parent-icon-sound
+        padding-left: 16px
+    .my-range
+        width: 100%
+        cursor: pointer
+        appearance: none
+        background: #393B4B
+        height: 2px
+        margin-bottom: 15px
+        &:hover,
+        &:active
+        &:focus 
+            appearance: none
+        &::-webkit-slider-runnable-track
+            background: -webkit-gradient(linear, left top, left bottom, from(#F7A52F), to(#F7A52F)) no-repeat #393B4B
+            background: linear-gradient(#F7A52F, #F7A52F) no-repeat #393B4B
+            background-size: var(--bg) 100%
+            height: 5px
+            -webkit-border-radius: 10px
+            border-radius: 10px
+        &::-moz-range-track
+            background: -moz-linear-gradient(#F7A52F, #F7A52F) no-repeat #393B4B
+            background: linear-gradient(#F7A52F, #F7A52F) no-repeat #393B4B
+            background-size: var(--bg) 100%
+            height: 5px
+            -moz-border-radius: 10px
+            border-radius: 10px
+        &::-webkit-slider-thumb
+            -webkit-appearance: none
+            appearance: none
+            background: #F7A52F
+            width: 15px
+            height: 15px
+            -webkit-border-radius: 50%
+            border-radius: 50%
+            margin-top: -4.5px
+        &::-moz-range-thumb
+            -moz-appearance: none
+            appearance: none
+            background: #F7A52F
+            width: 15px
+            height: 15px
+            -moz-border-radius: 50%
+            border-radius: 50%
+            margin-top: -4.5px
+        &::-moz-range-progress
+            background: #F7A52F
+            height: 5px
+            -moz-border-radius: 10px
+            border-radius: 10px
+        &.disabled,
+        &[disabled],
+        &[disabled="true"],
+        &[disabled="disabled"]
+            cursor: default
+            user-select: none
+            pointer-events: none
+            opacity: .8
