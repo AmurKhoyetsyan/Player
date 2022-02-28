@@ -1,3 +1,7 @@
+body {
+  padding-top: 150px;
+}
+
 .arm-player,
 .arm-player * {
   padding: 0;
@@ -128,6 +132,27 @@
 
 .arm-player .parent-icon-sound {
   padding-left: 16px;
+}
+
+.arm-player .parent-icon-sound .content-audio-icon {
+  cursor: pointer;
+  position: relative;
+}
+
+.arm-player .parent-icon-sound .content-audio-icon .parent-volume-range {
+  display: none;
+  position: absolute;
+  border-radius: 5px;
+  background-color: #282A3B;
+  width: 150px;
+  border: 1px solid #FFFFFF;
+  padding: 0 5px;
+  -webkit-transform: rotate(-90deg) translate(90px, -65px);
+          transform: rotate(-90deg) translate(90px, -65px);
+}
+
+.arm-player .parent-icon-sound .content-audio-icon:hover .parent-volume-range {
+  display: block;
 }
 
 .arm-player .my-range {
