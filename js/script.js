@@ -8,6 +8,8 @@
 
     let volume = player.querySelector('.volume');
 
+    let progress = player.querySelector('.progress');
+
     let playBitton = player.querySelector('.btn-circle-hover-gradient');
 
     let showBtnTitle = playBitton.querySelector('.tooltip-custom');
@@ -17,10 +19,21 @@
     let duration = "00:00";
     let currentTime = "00:00";
 
+    let progressDuration = 0;
+    let progressCurrentTime = 0;
+
     showDuration.innerText = currentTime  + " / " + duration;
 
     function updateTrackTime() {
         if (audio) {
+            progressCurrentTime = audio.currentTime;
+
+            if (progressDuration !== 0) {
+                let progressVal = (progressCurrentTime * 100) / progressDuration;
+                progress.value = progressVal;
+                progress.style.setProperty('--bg', `${progressVal}%`);
+            }
+
             let currTime = Math.floor(audio.currentTime).toString();
             currentTime = formatSecondsAsTime(currTime);
             showDuration.innerText = currentTime  + " / " + duration;
@@ -30,6 +43,7 @@
     function getDuration() {
         if (audio) {
             let dur = Math.floor(audio.duration).toString();
+            progressDuration = audio.duration;
             if (isNaN(dur)){
                 duration = '00:00';
             } else{
@@ -104,5 +118,21 @@
     volume.addEventListener('input', (event) => {
         volume.style.setProperty('--bg', `${volume.value}%`);
         audio.volume = parseFloat(volume.value) / 100;
+    });
+
+    progress.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+    });
+
+    progress.addEventListener('input', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        let val = event.target.value;
+
+        if (progressDuration !== 0) {
+            audio.currentTime = (val * progressDuration) / 100;
+        }
     });
 })();

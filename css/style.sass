@@ -1,3 +1,6 @@
+body 
+    padding-top: 150px
+
 .arm-player,
 .arm-player *
     padding: 0
@@ -86,6 +89,21 @@
         min-width: 120px
     .parent-icon-sound
         padding-left: 16px
+        .content-audio-icon
+            cursor: pointer
+            position: relative
+            .parent-volume-range
+                display: none
+                position: absolute
+                border-radius: 5px
+                background-color: #282A3B
+                width: 150px
+                border: 1px solid #FFFFFF
+                padding: 0 5px
+                transform: rotate(-90deg) translate(90px, -65px)
+            &:hover
+                .parent-volume-range
+                    display: block
     .my-range
         width: 100%
         cursor: pointer
