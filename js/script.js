@@ -44,6 +44,7 @@
         if (audio) {
             let dur = Math.floor(audio.duration).toString();
             progressDuration = audio.duration;
+            progress.setAttribute('step', 100 / audio.duration);
             if (isNaN(dur)){
                 duration = '00:00';
             } else{
@@ -74,6 +75,14 @@
             if (!loaded) {
                 await audio.load();
                 loaded = true;
+
+                let parentGraphic = document.querySelector('.graphic');
+
+                Graphic.tag = parentGraphic;
+                Graphic.color = "rgb(40 42 59)";
+                Graphic.width = parentGraphic.clientWidth;
+                Graphic.height = parentGraphic.clientHeight || 50;
+                Graphic.run(audio);
             }
             
             play ? audio.play() : audio.pause();
