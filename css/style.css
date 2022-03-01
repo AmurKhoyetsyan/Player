@@ -1,5 +1,5 @@
 body {
-  padding-top: 150px;
+  padding: 150px 30px;
 }
 
 .arm-player,
@@ -26,6 +26,17 @@ body {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
+}
+
+.arm-player .graphic {
+  width: 100%;
+  height: 30px;
+}
+
+.arm-player .graphic canvas {
+  background-color: #D97A0C;
+  -webkit-transform: matrix(1, 0, 0, -1, 0, 0);
+          transform: matrix(1, 0, 0, -1, 0, 0);
 }
 
 .arm-player .max-content-width {
