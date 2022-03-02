@@ -8,9 +8,9 @@
         <link rel="stylesheet" type="text/css" href="./css/style.css" />
     </head>
     <body>
-        <audio controls="controls" >
-            <source src="./src/carla.mp3" />
-        </audio>
+        <!-- <audio controls="controls" >
+            <source crossorigin="anonymous" src="./src/carla.mp3" />
+        </audio> -->
         <div class="arm-player">
             <div>
                 <button
@@ -53,7 +53,11 @@
                     </svg>
                </div>
             </div>
+            <div class="loader-parent">
+                <div data-loader="ekvalayzer" loader-color="#0cbad9" title-color="#0cbad9" size="100"></div>
+            </div>
         </div>
+        <script type="text/javascript" src="./js/ekvalayzer.min.js"></script>
         <script type="text/javascript" src="./js/create-grphic-line.js"></script>
         <script type="text/javascript" src="./js/script.js"></script>
     </body>
