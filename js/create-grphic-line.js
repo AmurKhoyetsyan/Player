@@ -2,7 +2,7 @@ let Graphic = {
     tag: null,
     width: 200,
     height: 50,
-    color: '#00FF00',
+    color: '#FFFFFF',
     canvas: null,
     frequencyArray: null,
     contextCanvas: null,
@@ -18,9 +18,9 @@ Graphic.createDiagram = function() {
         _self.analyser.getByteFrequencyData(_self.frequencyArray);
         for (let i = 0; i < _self.width; i++) {
             let x = i;
-            let y = _self.height;
+            let y = _self.frequencyArray[i] * 0.1;;
             let xEnd = i;
-            let yEnd = _self.frequencyArray[i] * 0.1;
+            let yEnd = 0
             drawBar(x, y, xEnd, yEnd, 1);
         }
 
@@ -68,6 +68,7 @@ Graphic.run = function(audio) {
     let source = context.createMediaElementSource(audio);
     source.connect(this.analyser);
     this.analyser.connect(context.destination);
+    console.log(this.analyser)
     this.frequencyArray = new Uint8Array(this.analyser.frequencyBinCount);
 
     this.createDiagram();
