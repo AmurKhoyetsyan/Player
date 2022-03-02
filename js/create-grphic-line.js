@@ -68,7 +68,6 @@ Graphic.run = function(audio) {
     let source = context.createMediaElementSource(audio);
     source.connect(this.analyser);
     this.analyser.connect(context.destination);
-    console.log(this.analyser)
     this.frequencyArray = new Uint8Array(this.analyser.frequencyBinCount);
 
     this.createDiagram();
