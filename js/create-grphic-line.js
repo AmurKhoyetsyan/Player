@@ -1,4 +1,13 @@
-let Graphic = {
+/**
+ * Copyright (c) Amur 2022
+ *
+ * Timer
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+ let Graphic = {
     tag: null,
     width: 200,
     height: 50,
@@ -66,6 +75,7 @@ Graphic.run = function(audio) {
     let context = new AudioContext();
     this.analyser = context.createAnalyser();
     let source = context.createMediaElementSource(audio);
+    source.crossOrigin = "anonymous";
     source.connect(this.analyser);
     this.analyser.connect(context.destination);
     this.frequencyArray = new Uint8Array(this.analyser.frequencyBinCount);
