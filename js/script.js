@@ -79,7 +79,7 @@
                 let parentGraphic = document.querySelector('.graphic');
 
                 Graphic.tag = parentGraphic;
-                Graphic.color = "rgb(40 42 59)";
+                Graphic.color = "#FFFFFF";
                 Graphic.width = parentGraphic.clientWidth;
                 Graphic.height = parentGraphic.clientHeight || 50;
                 Graphic.run(audio);
