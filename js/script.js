@@ -1,6 +1,9 @@
-;(function(){
-    let audio = document.querySelector('audio');
-    audio.style["display"] = "none";
+;(async function(){
+    let audio = new Audio();
+    audio.crossOrigin = 'anonymous';
+    audio.src = './src/Club_ray_fortepiano.mp3';
+    audio.controls = true;
+    
     let play = false;
     let loaded = false;
 
@@ -9,6 +12,8 @@
     let volume = player.querySelector('.volume');
 
     let progress = player.querySelector('.progress');
+
+    let loader = player.querySelector('.loader-parent');
 
     let playBitton = player.querySelector('.btn-circle-hover-gradient');
 
@@ -22,6 +27,16 @@
     let progressDuration = 0;
     let progressCurrentTime = 0;
 
+    if(!loader.classList.contains('active')) {
+        loader.classList.add('active');
+    }
+
+    audio.oncanplaythrough = function(event) {
+        if(loader.classList.contains('active')) {
+            loader.classList.remove('active');
+        }
+    };
+    
     showDuration.innerText = currentTime  + " / " + duration;
 
     function updateTrackTime() {
