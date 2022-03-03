@@ -27,7 +27,7 @@ Graphic.createDiagram = function() {
         _self.analyser.getByteFrequencyData(_self.frequencyArray);
         for (let i = 0; i < _self.width; i++) {
             let x = i;
-            let y = _self.frequencyArray[i] * 0.1;;
+            let y = _self.frequencyArray[i] * 0.4;
             let xEnd = i;
             let yEnd = 0
             drawBar(x, y, xEnd, yEnd, 1);
