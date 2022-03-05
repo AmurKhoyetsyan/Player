@@ -18,7 +18,10 @@
     analyser: null,
     audioWave: true,
     audioWaveTag: null,
-    audio: null
+    audio: null,
+    context: new (window.AudioContext || window.webkitAudioContext)(),
+    source: null,
+    created: false
 }
 
 Graphic.createDiagram = function() {
@@ -80,79 +83,83 @@ Graphic.run = async function(audio, loadAudioCallback) {
     await this.audio.load();
 
     let _self = this;
-    let AudioContext = window.AudioContext || window.webkitAudioContext;
-    let context = new AudioContext();
-    _self.analyser = context.createAnalyser();
-    let source = context.createMediaElementSource(_self.audio);
-    source.crossOrigin = "anonymous";
-    source.connect(_self.analyser);
-    _self.analyser.connect(context.destination);
-    _self.frequencyArray = new Uint8Array(_self.analyser.frequencyBinCount);
 
-    _self.createDiagram();
+    _self.audio.oncanplaythrough = function(event) {
+        if (!_self.created) {
+            _self.created = true;
+            _self.analyser = _self.context.createAnalyser();
+            _self.source = _self.context.createMediaElementSource(_self.audio);
+            _self.source.crossOrigin = "anonymous";
+            _self.source.connect(_self.analyser);
+            _self.analyser.connect(_self.context.destination);
+            _self.frequencyArray = new Uint8Array(_self.analyser.frequencyBinCount);
 
-    if (_self.audioWave && _self.audioWaveTag) {
-        const NUMBER_OF_BUCKETS = 200;
-        const SPACE_BETWEEN_BARS = 0.1;
+            _self.createDiagram();
+        }
 
-        fetch(audio)
-            .then(response => response.arrayBuffer())
-            .then(audioData => {
-                context.decodeAudioData(audioData, buffer => {
-                    let decodedAudioData = buffer.getChannelData(0);
-                    let bucketDataSize = Math.floor(decodedAudioData.length / NUMBER_OF_BUCKETS);
-                    let buckets = [];
-                    for (var i = 0; i < NUMBER_OF_BUCKETS; i++) {
-                        let startingPoint = i * bucketDataSize;
-                        let endingPoint = i * bucketDataSize + bucketDataSize;
-                        let max = 0;
-                        for (var j = startingPoint; j < endingPoint; j++) {
-                            if (decodedAudioData[j] > max) {
-                                max = decodedAudioData[j];
+        if (_self.audioWave && _self.audioWaveTag) {
+            const NUMBER_OF_BUCKETS = 200;
+            const SPACE_BETWEEN_BARS = 0.1;
+    
+            fetch(audio)
+                .then(response => response.arrayBuffer())
+                .then(audioData => {
+                    _self.context.decodeAudioData(audioData, buffer => {
+                        let decodedAudioData = buffer.getChannelData(0);
+                        let bucketDataSize = Math.floor(decodedAudioData.length / NUMBER_OF_BUCKETS);
+                        let buckets = [];
+                        for (var i = 0; i < NUMBER_OF_BUCKETS; i++) {
+                            let startingPoint = i * bucketDataSize;
+                            let endingPoint = i * bucketDataSize + bucketDataSize;
+                            let max = 0;
+                            for (var j = startingPoint; j < endingPoint; j++) {
+                                if (decodedAudioData[j] > max) {
+                                    max = decodedAudioData[j];
+                                }
                             }
+                            let size = Math.abs(max);
+                            buckets.push(size / 2);
                         }
-                        let size = Math.abs(max);
-                        buckets.push(size / 2);
-                    }
-
-                    _self.audioWaveTag.innerHTML = `<svg viewbox="0 0 100 100" class="waveform-container" preserveaspectratio="none" height="50px" width="100%">
-                        <rect class="waveform-bg" x="0" y="0" height="100" width="100%"/>
-                        <rect id="waveform-progress" class="waveform-progress" x="0" y="0" height="100" width="0"/>
-                    </svg>
-                    <svg height="0" width="0">
-                        <defs>
-                            <clippath id="waveform-mask"></clippath>
-                        </defs>
-                    </svg>`;
-
-                    let svgMask = document.getElementById('waveform-mask');
-
-                    svgMask.innerHTML = buckets.map((bucket, i) => {
-                        let bucketSVGWidth = 100.0 / buckets.length;
-                        let bucketSVGHeight = bucket * 300.0;
-
-                        return `<rect
-                            x=${bucketSVGWidth * i + SPACE_BETWEEN_BARS / 2.0}
-                            y=${ (100 - bucketSVGHeight) / 2.0}
-                            width=${bucketSVGWidth - SPACE_BETWEEN_BARS}
-                            height=${bucketSVGHeight} />`;
-                    }).join('');
-                    
-                    let waveformProgress = document.getElementById('waveform-progress');
-
-                    setInterval(() => {
-                        waveformProgress.setAttribute('width', _self.audio.currentTime / _self.audio.duration * 100);
-                    }, 100);
-
-                    loadAudioCallback(_self.audio);
-                }, e => {
-                    console.log('Error with decoding audio data' + e.err);
-                },);
-        }).catch(err => {
-            console.log(err);
-        });
-    } else {
-        loadAudioCallback(_self.audio);
+    
+                        _self.audioWaveTag.innerHTML = `<svg viewbox="0 0 100 100" class="waveform-container" preserveaspectratio="none" height="50px" width="100%">
+                            <rect class="waveform-bg" x="0" y="0" height="100" width="100%"/>
+                            <rect id="waveform-progress" class="waveform-progress" x="0" y="0" height="100" width="0"/>
+                        </svg>
+                        <svg height="0" width="0">
+                            <defs>
+                                <clippath id="waveform-mask"></clippath>
+                            </defs>
+                        </svg>`;
+    
+                        let svgMask = document.getElementById('waveform-mask');
+    
+                        svgMask.innerHTML = buckets.map((bucket, i) => {
+                            let bucketSVGWidth = 100.0 / buckets.length;
+                            let bucketSVGHeight = bucket * 300.0;
+    
+                            return `<rect
+                                x=${bucketSVGWidth * i + SPACE_BETWEEN_BARS / 2.0}
+                                y=${ (100 - bucketSVGHeight) / 2.0}
+                                width=${bucketSVGWidth - SPACE_BETWEEN_BARS}
+                                height=${bucketSVGHeight} />`;
+                        }).join('');
+                        
+                        let waveformProgress = document.getElementById('waveform-progress');
+    
+                        setInterval(() => {
+                            waveformProgress.setAttribute('width', _self.audio.currentTime / _self.audio.duration * 100);
+                        }, 100);
+    
+                        loadAudioCallback(_self.audio);
+                    }, e => {
+                        console.log('Error with decoding audio data' + e.err);
+                    },);
+            }).catch(err => {
+                console.log(err);
+            });
+        } else {
+            loadAudioCallback(_self.audio);
+        }
     }
 };
 
