@@ -94,6 +94,7 @@ body {
 .arm-player .graphic-ekvalayzer canvas {
   -webkit-transform: matrix(1, 0, 0, -1, 0, 0);
           transform: matrix(1, 0, 0, -1, 0, 0);
+  border: 1px solid #FFFFFF;
 }
 
 .arm-player .graphic-wave {
