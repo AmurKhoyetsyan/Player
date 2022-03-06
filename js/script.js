@@ -7,7 +7,7 @@
 
     let parentGraphic = document.querySelector('.graphic-ekvalayzer');
 
-    function run(audio) {
+    function run(audio, _self, createEkvalayzer) {
         let play = false;
         let player = document.querySelector('.arm-player');
         let volume = player.querySelector('.volume');
@@ -72,12 +72,16 @@
                 return min + ':' + sec;
             };
 
-            async function playAudio(event) {
+            function playAudio(event) {
                 event.preventDefault();
                 event.stopPropagation();
                 play = !play;
+
+                
                 if (audio) {
                     play ? audio.play() : audio.pause();
+
+                    createEkvalayzer(_self, audio);
 
                     if (play) {
                         if (playBitton.classList.contains('play')) {
